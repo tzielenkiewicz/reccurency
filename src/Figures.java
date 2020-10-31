@@ -21,7 +21,7 @@ public class Figures extends Frame {
         }
 
         g.clearRect(0,0,getWidth(),getHeight());
-        int length = 260;
+        int length = 200;
         try {
             helix (length, 10, 10, g);
             Thread.sleep(3000);
@@ -30,13 +30,41 @@ public class Figures extends Frame {
         }
 
         g.clearRect(0,0,getWidth(),getHeight());
+        try {
+            triangles(200, 10, 10, 10, g);
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         System.exit(0);
 
     }
 
 
+    private void triangles(int lg, int n, int x, int y, Graphics g) throws InterruptedException {
 
+        if (n > 0) {
+            Thread.sleep(500);
+            g.drawLine(x, y, x + lg, y);
+
+            for (int i = n; i > 1; i--) {
+                Thread.sleep(500);
+                int tempLg = x + i * lg / n - lg / (2 * n);
+                g.drawLine(x + i*lg/n, y, tempLg, y + lg / (2 * n));
+                Thread.sleep(500);
+                g.drawLine(tempLg, y + lg / (2 * n), x + (i-1) * lg / n, y);
+            }
+            Thread.sleep(500);
+            g.drawLine(x + lg/n, y, x + lg/(2*n), y + lg / (2*n));
+            Thread.sleep(500);
+            triangles(lg - (lg/n), n-1, x + lg/(2*n), y + lg/(2*n), g);
+            Thread.sleep(500);
+            g.drawLine(x + lg/(2*n), y + lg/(2*n), x, y);
+            Thread.sleep(500);
+        }
+    }
     private void squares(int n, int dim, int x, int y, Graphics g) throws InterruptedException {
         if (n > 0) {
             g.drawLine(x, y, x + dim, y);
@@ -64,7 +92,7 @@ public class Figures extends Frame {
         }
     }
     private void helix (int length, int x, int y, Graphics g) throws InterruptedException {
-        int diff = 5;
+        int diff = 10;
         if (length > 0) {
             g.drawLine(x, y, x + length, y);
             Thread.sleep(500);
